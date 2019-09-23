@@ -19,7 +19,7 @@ public class KookyKeypadScript : MonoBehaviour
     public Renderer[] leds;
     public Material[] mats;
 
-    private string[] symbols = { "❦", "➵", "✪", "ㅌ", "ㄾ", "ㄿ", "ひ", "け", "℔", "℈", "℞", "ᵊ", "aɪ", "❂", "〄", "⋭", "➳", "˂", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+    private string[] symbols = { "❦", "➵", "✪", "ㅌ", "ㄾ", "ㄿ", "ひ", "け", "℔", "℈", "℞", "ᵊ", "aɪ", "✮", "〄", "⋭", "➳", "˂", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
     private int[] avalues = { 13, 11, 14, 18, 15, 13, 11, 12, 16, 18, 13, 12, 19, 14, 11, 17, 11, 15, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26 };
     private int bvalue;
 

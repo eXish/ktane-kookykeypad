@@ -23,11 +23,11 @@ MonoBehaviour:
     PDF: https://ktane.timwi.de/PDF/Kooky%20Keypad.pdf
 
 
-    Kooky Keypad (kookyKeypadModule) v1.0.1
+    Kooky Keypad (kookyKeypadModule) v1.0.2
 
     Module and Idea by eXish
 
     Twitch Plays supported'
-  version: 1.0.1
+  version: 1.0.2
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 90abde190e62cfe4dbbca6285da27943, type: 3}
