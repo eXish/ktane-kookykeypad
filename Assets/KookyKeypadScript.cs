@@ -365,7 +365,7 @@ public class KookyKeypadScript : MonoBehaviour
             toggleStates(new int[] { 0, 2 });
             toggled.Add(8);
         }
-        if (!(colorDisp("cadetblue") || colorDisp("deepseagreen")))
+        if (!colorDisp("cadetblue") || !colorDisp("deepseagreen"))
         {
             toggleStates(new int[] { 1 });
             toggled.Add(9);
