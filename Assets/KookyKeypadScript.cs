@@ -38,6 +38,7 @@ public class KookyKeypadScript : MonoBehaviour
 
     private bool firstpress = false;
     private bool colormode = false;
+    private bool striking = false;
 
     static int moduleIdCounter = 1;
     int moduleId;
@@ -70,7 +71,7 @@ public class KookyKeypadScript : MonoBehaviour
     {
         if (moduleSolved != true)
         {
-            if(colormode != true)
+            if(colormode != true && striking != true)
             {
                 if(pressed != buttons[4])
                 {
@@ -79,7 +80,7 @@ public class KookyKeypadScript : MonoBehaviour
                         firstpress = true;
                         timer = StartCoroutine(timerThing());
                     }
-                    else
+                    else if (currentstates[Array.IndexOf(buttons, pressed)] != true)
                     {
                         time = 0;
                     }
@@ -87,31 +88,31 @@ public class KookyKeypadScript : MonoBehaviour
                 if (pressed == buttons[0] && currentstates[0] != true)
                 {
                     pressed.AddInteractionPunch(0.25f);
-                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, pressed.transform);
                     StartCoroutine(buttonDown(0));
                 }
                 else if (pressed == buttons[1] && currentstates[1] != true)
                 {
                     pressed.AddInteractionPunch(0.25f);
-                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, pressed.transform);
                     StartCoroutine(buttonDown(1));
                 }
                 else if (pressed == buttons[2] && currentstates[2] != true)
                 {
                     pressed.AddInteractionPunch(0.25f);
-                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, pressed.transform);
                     StartCoroutine(buttonDown(2));
                 }
                 else if (pressed == buttons[3] && currentstates[3] != true)
                 {
                     pressed.AddInteractionPunch(0.25f);
-                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, pressed.transform);
                     StartCoroutine(buttonDown(3));
                 }
                 else if (pressed == buttons[4] && firstpress == true)
                 {
                     pressed.AddInteractionPunch(0.25f);
-                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
+                    audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, pressed.transform);
                     StopCoroutine(timer);
                     Debug.LogFormat("[Kooky Keypad #{0}] Submitted the following buttons...", moduleId);
                     Debug.LogFormat("[Kooky Keypad #{0}] Top Left: {1} | Top Right: {2} | Bottom Left: {3} | Bottom Right: {4}", moduleId, currentstates[0], currentstates[1], currentstates[2], currentstates[3]);
@@ -322,7 +323,7 @@ public class KookyKeypadScript : MonoBehaviour
         {
             correctindex = 14;
         }
-        Debug.LogFormat("[Kooky Keypad #{0}] If the correct buttons are pressed from step 1, then the leds should be showing the following in 'color mode'...", moduleId);
+        Debug.LogFormat("[Kooky Keypad #{0}] If the correct buttons are pressed from step 1, then the LEDs should be showing the following in 'color mode'...", moduleId);
         Debug.LogFormat("[Kooky Keypad #{0}] Top Left: {1} | Top Right: {2} | Bottom Left: {3} | Bottom Right: {4}", moduleId, colorcombos[correctindex][0], colorcombos[correctindex][1], colorcombos[correctindex][2], colorcombos[correctindex][3]);
         List<int> toggled = new List<int>();
         if (bomb.IsTwoFactorPresent())
@@ -499,6 +500,7 @@ public class KookyKeypadScript : MonoBehaviour
 
     private IEnumerator strike()
     {
+        striking = true;
         leds[0].material = mats[11];
         leds[1].material = mats[11];
         leds[2].material = mats[11];
@@ -515,6 +517,7 @@ public class KookyKeypadScript : MonoBehaviour
         }
         audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonRelease, transform);
         Start();
+        striking = false;
         StopCoroutine("strike");
     }
 
@@ -770,15 +773,16 @@ public class KookyKeypadScript : MonoBehaviour
         string[] parameters = command.Split(' ');
         if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
-            if(parameters.Length >= 2)
+            yield return null;
+            if (parameters.Length >= 2)
             {
                 string sub = command.Substring(6);
                 sub = sub.Replace(" ", "");
                 parameters[1] = sub;
                 if (isCmdValid(parameters[1]))
                 {
-                    yield return null;
-                    for(int i = 0; i < parameters[1].Length; i++)
+                    while (colormode) { yield return new WaitForSeconds(0.1f); }
+                    for (int i = 0; i < parameters[1].Length; i++)
                     {
                         if (parameters[1].ElementAt(i).Equals('1'))
                         {
@@ -799,12 +803,21 @@ public class KookyKeypadScript : MonoBehaviour
                         yield return new WaitForSeconds(0.1f);
                     }
                     yield return new WaitForSeconds(0.5f);
-                    yield break;
+                }
+                else
+                {
+                    yield return "sendtochaterror The specified set of buttons to press is invalid!";
                 }
             }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the button(s) to press!";
+            }
+            yield break;
         }
         if (Regex.IsMatch(parameters[0], @"^\s*submit\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
+            yield return null;
             if (parameters.Length >= 2)
             {
                 string sub = command.Substring(7);
@@ -812,7 +825,7 @@ public class KookyKeypadScript : MonoBehaviour
                 parameters[1] = sub;
                 if (isCmdValid(parameters[1]))
                 {
-                    yield return null;
+                    while (colormode) { yield return new WaitForSeconds(0.1f); }
                     for (int i = 0; i < parameters[1].Length; i++)
                     {
                         if (parameters[1].ElementAt(i).Equals('1'))
@@ -835,9 +848,58 @@ public class KookyKeypadScript : MonoBehaviour
                     }
                     yield return new WaitForSeconds(0.5f);
                     buttons[4].OnInteract();
-                    yield break;
+                }
+                else
+                {
+                    yield return "sendtochaterror The specified set of buttons to submit is invalid!";
                 }
             }
+            else if (parameters.Length == 1)
+            {
+                yield return "sendtochaterror Please specify the button(s) to submit!";
+            }
+            yield break;
         }
+    }
+
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        bool canSolve = true;
+        if (!colormode)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Log(currentstates[i] + " " + step2states[i]);
+                if (currentstates[i] == true && step2states[i] == false)
+                {
+                    canSolve = false;
+                    break;
+                }
+            }
+            if (canSolve)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    if (currentstates[i] != step2states[i])
+                    {
+                        buttons[i].OnInteract();
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                }
+                yield return new WaitForSeconds(0.5f);
+                buttons[4].OnInteract();
+            }
+        }
+        while (currentstates[0] == true || currentstates[1] == true || currentstates[2] == true || currentstates[3] == true) { yield return true; yield return new WaitForSeconds(0.1f); }
+        for (int i = 0; i < 4; i++)
+        {
+            if (currentstates[i] != step2states[i])
+            {
+                buttons[i].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+        yield return new WaitForSeconds(0.5f);
+        buttons[4].OnInteract();
     }
 }
