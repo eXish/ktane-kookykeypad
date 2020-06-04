@@ -781,7 +781,7 @@ public class KookyKeypadScript : MonoBehaviour
                 parameters[1] = sub;
                 if (isCmdValid(parameters[1]))
                 {
-                    while (colormode) { yield return new WaitForSeconds(0.1f); }
+                    while (currentstates[0] == true || currentstates[1] == true || currentstates[2] == true || currentstates[3] == true) { yield return new WaitForSeconds(0.1f); }
                     for (int i = 0; i < parameters[1].Length; i++)
                     {
                         if (parameters[1].ElementAt(i).Equals('1'))
@@ -825,7 +825,7 @@ public class KookyKeypadScript : MonoBehaviour
                 parameters[1] = sub;
                 if (isCmdValid(parameters[1]))
                 {
-                    while (colormode) { yield return new WaitForSeconds(0.1f); }
+                    while (currentstates[0] == true || currentstates[1] == true || currentstates[2] == true || currentstates[3] == true) { yield return new WaitForSeconds(0.1f); }
                     for (int i = 0; i < parameters[1].Length; i++)
                     {
                         if (parameters[1].ElementAt(i).Equals('1'))
