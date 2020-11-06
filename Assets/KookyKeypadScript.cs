@@ -315,7 +315,7 @@ public class KookyKeypadScript : MonoBehaviour
         {
             correctindex = 12;
         }
-        else if (checkBools1( new bool[] { false, true, true, false }))
+        else if (checkBools1( new bool[] { false, true, false, true }))
         {
             correctindex = 13;
         }
@@ -589,7 +589,7 @@ public class KookyKeypadScript : MonoBehaviour
         {
             index = 12;
         }
-        else if (checkBools2( new bool[] { false, true, true, false }))
+        else if (checkBools2( new bool[] { false, true, false, true }))
         {
             index = 13;
         }
