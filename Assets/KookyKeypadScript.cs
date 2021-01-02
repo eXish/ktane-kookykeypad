@@ -11,10 +11,12 @@ public class KookyKeypadScript : MonoBehaviour
 
     public KMAudio audio;
     public KMBombInfo bomb;
+    public KMColorblindMode colorblind;
 
     public KMSelectable[] buttons;
     public GameObject[] buttonObjs;
     public TextMesh[] buttonTexts;
+    public TextMesh[] colorblindTexts;
 
     public Renderer[] leds;
     public Material[] mats;
@@ -40,6 +42,8 @@ public class KookyKeypadScript : MonoBehaviour
     private bool colormode = false;
     private bool striking = false;
 
+    private bool colorblindActive = false;
+
     static int moduleIdCounter = 1;
     int moduleId;
     private bool moduleSolved;
@@ -57,6 +61,10 @@ public class KookyKeypadScript : MonoBehaviour
 
     void Start()
     {
+        if (colorblind.ColorblindModeActive) {
+            colorblindActive = true;
+        }
+
         step1states = new bool[] { false, false, false, false };
         step2states = new bool[] { false, false, false, false };
         for (int i = 0; i < colorcombos.Length; i++)
@@ -213,7 +221,7 @@ public class KookyKeypadScript : MonoBehaviour
         {
             Debug.LogFormat("[Kooky Keypad #{0}] An HDMI or RJ-45 port is NOT present! The b value is the last serial # digit which is {1}", moduleId, bvalue);
         }
-        
+
         if(assignedVals[0] + bvalue >= 20)
         {
             step1states[0] = true;
@@ -602,42 +610,52 @@ public class KookyKeypadScript : MonoBehaviour
             if (colorcombos[index][i].Equals("crimson"))
             {
                 leds[i].material = mats[0];
+                if (colorblindActive) {colorblindTexts[i].text = "Crim";}
             }
             else if (colorcombos[index][i].Equals("red"))
             {
                 leds[i].material = mats[1];
+                if (colorblindActive) {colorblindTexts[i].text = "Red";}
             }
             else if (colorcombos[index][i].Equals("coral"))
             {
                 leds[i].material = mats[2];
+                if (colorblindActive) {colorblindTexts[i].text = "Coral";}
             }
             else if (colorcombos[index][i].Equals("orange"))
             {
                 leds[i].material = mats[3];
+                if (colorblindActive) {colorblindTexts[i].text = "Orange";}
             }
             else if (colorcombos[index][i].Equals("lemonchiffon"))
             {
                 leds[i].material = mats[4];
+                if (colorblindActive) {colorblindTexts[i].text = "Lemon";}
             }
             else if (colorcombos[index][i].Equals("mediumspringgreen"))
             {
                 leds[i].material = mats[5];
+                if (colorblindActive) {colorblindTexts[i].text = "Medium";}
             }
             else if (colorcombos[index][i].Equals("deepseagreen"))
             {
                 leds[i].material = mats[6];
+                if (colorblindActive) {colorblindTexts[i].text = "Deep";}
             }
             else if (colorcombos[index][i].Equals("cadetblue"))
             {
                 leds[i].material = mats[7];
+                if (colorblindActive) {colorblindTexts[i].text = "Cadet";}
             }
             else if (colorcombos[index][i].Equals("slateblue"))
             {
                 leds[i].material = mats[8];
+                if (colorblindActive) {colorblindTexts[i].text = "Slate";}
             }
             else if (colorcombos[index][i].Equals("darkmagenta"))
             {
                 leds[i].material = mats[9];
+                if (colorblindActive) {colorblindTexts[i].text = "Dark";}
             }
         }
         yield return new WaitForSeconds(2.0f);
@@ -686,6 +704,7 @@ public class KookyKeypadScript : MonoBehaviour
 
     private IEnumerator buttonUp(int i)
     {
+        if (colorblindActive) {colorblindTexts[i].text = "";}
         if (i == 0)
         {
             currentstates[0] = false;
