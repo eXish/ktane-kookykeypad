@@ -610,59 +610,60 @@ public class KookyKeypadScript : MonoBehaviour
             if (colorcombos[index][i].Equals("crimson"))
             {
                 leds[i].material = mats[0];
-                if (colorblindActive) {colorblindTexts[i].text = "Crim";}
+                if (colorblindActive) {colorblindTexts[i].text = "CRIM";}
             }
             else if (colorcombos[index][i].Equals("red"))
             {
                 leds[i].material = mats[1];
-                if (colorblindActive) {colorblindTexts[i].text = "Red";}
+                if (colorblindActive) {colorblindTexts[i].text = "RED";}
             }
             else if (colorcombos[index][i].Equals("coral"))
             {
                 leds[i].material = mats[2];
-                if (colorblindActive) {colorblindTexts[i].text = "Coral";}
+                if (colorblindActive) {colorblindTexts[i].text = "CORAL";}
             }
             else if (colorcombos[index][i].Equals("orange"))
             {
                 leds[i].material = mats[3];
-                if (colorblindActive) {colorblindTexts[i].text = "Orange";}
+                if (colorblindActive) {colorblindTexts[i].text = "ORANGE";}
             }
             else if (colorcombos[index][i].Equals("lemonchiffon"))
             {
                 leds[i].material = mats[4];
-                if (colorblindActive) {colorblindTexts[i].text = "Lemon";}
+                if (colorblindActive) {colorblindTexts[i].text = "LEMON";}
             }
             else if (colorcombos[index][i].Equals("mediumspringgreen"))
             {
                 leds[i].material = mats[5];
-                if (colorblindActive) {colorblindTexts[i].text = "Medium";}
+                if (colorblindActive) {colorblindTexts[i].text = "MEDIUM";}
             }
             else if (colorcombos[index][i].Equals("deepseagreen"))
             {
                 leds[i].material = mats[6];
-                if (colorblindActive) {colorblindTexts[i].text = "Deep";}
+                if (colorblindActive) {colorblindTexts[i].text = "DEEP";}
             }
             else if (colorcombos[index][i].Equals("cadetblue"))
             {
                 leds[i].material = mats[7];
-                if (colorblindActive) {colorblindTexts[i].text = "Cadet";}
+                if (colorblindActive) {colorblindTexts[i].text = "CADET";}
             }
             else if (colorcombos[index][i].Equals("slateblue"))
             {
                 leds[i].material = mats[8];
-                if (colorblindActive) {colorblindTexts[i].text = "Slate";}
+                if (colorblindActive) {colorblindTexts[i].text = "SLATE";}
             }
             else if (colorcombos[index][i].Equals("darkmagenta"))
             {
                 leds[i].material = mats[9];
-                if (colorblindActive) {colorblindTexts[i].text = "Dark";}
+                if (colorblindActive) {colorblindTexts[i].text = "DARK";}
             }
         }
         yield return new WaitForSeconds(2.0f);
         for (int i = 0; i < 4; i++)
         {
             leds[i].material = mats[10];
-            if(currentstates[i] == true)
+            if (colorblindActive) {colorblindTexts[i].text = "";}
+            if (currentstates[i] == true)
             {
                 StartCoroutine(buttonUp(i));
             }
@@ -784,11 +785,136 @@ public class KookyKeypadScript : MonoBehaviour
     }
 
     #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} press <buttons> [Presses the specified buttons] | !{0} submit <buttons> [Submits the specified buttons] | Button reference: 1=topleft, 2=topright, 3=bottomleft, 4=bottomright";
+    private readonly string TwitchHelpMessage = @"!{0} press <buttons> [Presses the specified buttons] | !{0} submit <buttons> [Submits the specified buttons] | !{0} colorblind [Toggles colorblind mode] | Button reference: 1=topleft, 2=topright, 3=bottomleft, 4=bottomright";
     #pragma warning restore 414
 
     IEnumerator ProcessTwitchCommand(string command)
     {
+        if (Regex.IsMatch(command, @"^\s*colorblind\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+        {
+            yield return null;
+            if (colorblindActive)
+            {
+                colorblindActive = false;
+                if (colormode)
+                {
+                    for (int i = 0; i < 4; i++)
+                        colorblindTexts[i].text = "";
+                }
+            }
+            else
+            {
+                colorblindActive = true;
+                if (colormode)
+                {
+                    int index = 0;
+                    if (checkBools2(new bool[] { true, false, false, false }))
+                    {
+                        index = 0;
+                    }
+                    else if (checkBools2(new bool[] { false, true, false, false }))
+                    {
+                        index = 1;
+                    }
+                    else if (checkBools2(new bool[] { false, false, true, false }))
+                    {
+                        index = 2;
+                    }
+                    else if (checkBools2(new bool[] { false, false, false, true }))
+                    {
+                        index = 3;
+                    }
+                    else if (checkBools2(new bool[] { true, false, true, false }))
+                    {
+                        index = 4;
+                    }
+                    else if (checkBools2(new bool[] { true, true, false, false }))
+                    {
+                        index = 5;
+                    }
+                    else if (checkBools2(new bool[] { false, true, true, false }))
+                    {
+                        index = 6;
+                    }
+                    else if (checkBools2(new bool[] { false, false, true, true }))
+                    {
+                        index = 7;
+                    }
+                    else if (checkBools2(new bool[] { true, true, true, false }))
+                    {
+                        index = 8;
+                    }
+                    else if (checkBools2(new bool[] { true, true, false, true }))
+                    {
+                        index = 9;
+                    }
+                    else if (checkBools2(new bool[] { false, true, true, true }))
+                    {
+                        index = 10;
+                    }
+                    else if (checkBools2(new bool[] { true, false, true, true }))
+                    {
+                        index = 11;
+                    }
+                    else if (checkBools2(new bool[] { true, false, false, true }))
+                    {
+                        index = 12;
+                    }
+                    else if (checkBools2(new bool[] { false, true, false, true }))
+                    {
+                        index = 13;
+                    }
+                    else if (checkBools2(new bool[] { true, true, true, true }))
+                    {
+                        index = 14;
+                    }
+                    for (int i = 0; i < 4; i++)
+                    {
+                        if (colorcombos[index][i].Equals("crimson"))
+                        {
+                            colorblindTexts[i].text = "CRIM";
+                        }
+                        else if (colorcombos[index][i].Equals("red"))
+                        {
+                            colorblindTexts[i].text = "RED";
+                        }
+                        else if (colorcombos[index][i].Equals("coral"))
+                        {
+                            colorblindTexts[i].text = "CORAL";
+                        }
+                        else if (colorcombos[index][i].Equals("orange"))
+                        {
+                            colorblindTexts[i].text = "ORANGE";
+                        }
+                        else if (colorcombos[index][i].Equals("lemonchiffon"))
+                        {
+                            colorblindTexts[i].text = "LEMON";
+                        }
+                        else if (colorcombos[index][i].Equals("mediumspringgreen"))
+                        {
+                            colorblindTexts[i].text = "MEDIUM";
+                        }
+                        else if (colorcombos[index][i].Equals("deepseagreen"))
+                        {
+                            colorblindTexts[i].text = "DEEP";
+                        }
+                        else if (colorcombos[index][i].Equals("cadetblue"))
+                        {
+                            colorblindTexts[i].text = "CADET";
+                        }
+                        else if (colorcombos[index][i].Equals("slateblue"))
+                        {
+                            colorblindTexts[i].text = "SLATE";
+                        }
+                        else if (colorcombos[index][i].Equals("darkmagenta"))
+                        {
+                            colorblindTexts[i].text = "DARK";
+                        }
+                    }
+                }
+            }
+            yield break;
+        }
         string[] parameters = command.Split(' ');
         if (Regex.IsMatch(parameters[0], @"^\s*press\s*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
         {
