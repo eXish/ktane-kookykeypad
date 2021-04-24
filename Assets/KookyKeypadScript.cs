@@ -1014,7 +1014,6 @@ public class KookyKeypadScript : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log(currentstates[i] + " " + step2states[i]);
                 if (currentstates[i] == true && step2states[i] == false)
                 {
                     canSolve = false;
@@ -1033,9 +1032,10 @@ public class KookyKeypadScript : MonoBehaviour
                 }
                 yield return new WaitForSeconds(0.5f);
                 buttons[4].OnInteract();
+                yield break;
             }
         }
-        while (currentstates[0] == true || currentstates[1] == true || currentstates[2] == true || currentstates[3] == true) { yield return true; yield return new WaitForSeconds(0.1f); }
+        while (currentstates[0] == true || currentstates[1] == true || currentstates[2] == true || currentstates[3] == true) { yield return true; }
         for (int i = 0; i < 4; i++)
         {
             if (currentstates[i] != step2states[i])
